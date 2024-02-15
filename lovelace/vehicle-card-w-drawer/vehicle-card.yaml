@@ -37,6 +37,8 @@ cards:
                         top: 1%
                         left: 91%
                         transform: none
+                # These conditionals are meant to display when you're at a zone you frequent and want to track
+                # Like for example the grocery store, gym, work, etc.
                 - type: conditional
                   conditions:
                     - entity: device_tracker.bunny_location_tracker
