@@ -7,4 +7,3 @@ This code actually comes from something I saw on a post in Facebook.
 ![Awesome e-ink dashboard](e-ink-dashboard.jpg)
 
 They have it in their [Github Repo](https://github.com/Axelle78/HomeAssistant/)
-
