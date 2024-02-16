@@ -1,0 +1,7 @@
+    - service: notify.android_device # or group of devices like notify.group_of_devices
+      data:
+        data:
+          media_stream: alarm_stream
+          tts_text: The text that the TTS is suppose to speak on the Android devices. Using alarm_stream makes it talk even if on DND.
+        message: TTS
+
