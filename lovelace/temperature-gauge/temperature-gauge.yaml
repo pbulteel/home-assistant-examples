@@ -1,0 +1,35 @@
+type: gauge
+entity: sensor.ebusd_broadcast_outsidetemp_temp2
+max: 30
+min: -10 # set to 10 for indoor temperatures
+needle: true
+segments:
+  - color: '#fff'
+    from: -10
+  - color: '#eef'
+    from: -5
+  - color: '#ddf'
+    from: 0
+  - color: '#ccf'
+    from: 5
+  - color: '#0004' # adds a little line to show the start point on what would be indoor gauges starting at 10
+    from: 9.9
+  - color: '#bbf'
+    from: 10
+  - color: '#aaf'
+    from: 13
+  - color: '#afa'
+    from: 16
+  - color: '#6f6'
+    from: 18
+  - color: '#df6'
+    from: 20
+  - color: '#fd6'
+    from: 21
+  - color: '#fa6'
+    from: 23
+  - color: '#f66'
+    from: 26
+  - color: '#d33'
+    from: 28
+name: Outside
