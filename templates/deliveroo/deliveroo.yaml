@@ -1,0 +1,23 @@
+- trigger:
+  - platform: event
+    event_type: "tasker"
+    event_date:
+      app: "com.deliveroo.orderapp"
+    variables:
+      message: "{{ trigger.event.data.message }}"
+      state_map:
+        " has accepted your order": "Being prepared"
+        "your rider is heading to ": "En route to pick up"
+        " has your order|on the way": "Out for delivery"
+        "once you have your order": "Almost there"
+        "tap here to leave": "Idle"
+      state: >-
+        {%- for key, value in state_map.items(): -%}
+          {%- if message is search(key, ignorecase=True) -%}
+            {{ value }}
+          {%- endif -%}
+        {%- endfor -%}
+  sensor:
+    - name: "Deliveroo Order Status"
+      unique_id: tpl-deliveroo-order-status
+      state: "{{ state }}"  
