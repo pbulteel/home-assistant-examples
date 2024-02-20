@@ -1,0 +1,236 @@
+alias: Start or stop applications when entering or leaving zones
+description: ""
+trigger:
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.home
+    event: enter
+    id: enter_home
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.home
+    event: leave
+    id: leave_home
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.pret
+    event: enter
+    id: enter_pret
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.co_op
+    event: enter
+    id: entered_shopping
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.co_op_2
+    event: enter
+    id: entered_shopping
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.sainsburys
+    event: enter
+    id: entered_shopping
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.tesco_express
+    event: enter
+    id: entered_shopping
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.tesco_express_2
+    event: enter
+    id: entered_shopping
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.tesco_extra
+    event: enter
+    id: entered_shopping
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.costa
+    event: enter
+    id: entered_costa
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.costa_2
+    event: enter
+    id: entered_costa
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.costa_3
+    event: enter
+    id: entered_costa
+  - type: battery_level
+    platform: device
+    device_id: <id-populated-by-ha-your-android-device>
+    entity_id: <id-your-android-device-battery>
+    domain: sensor
+    below: 12
+    id: low_battery
+  - platform: zone
+    entity_id: person.this_is_you
+    zone: zone.your_train_station
+    event: enter
+    id: entered_rail_station
+condition:
+  - type: is_battery_level
+    condition: device
+    device_id: <id-populated-by-ha-your-android-device>
+    entity_id: <id-your-android-device-battery>
+    domain: sensor
+    above: 10
+action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - enter_home
+              - low_battery
+        sequence:
+          - alias: Have WiGLE upload scan
+            service: notify.mobile_app_s23_your_phone
+            data:
+              message: command_broadcast_intent
+              data:
+                intent_package_name: net.wigle.wigleandroid
+                intent_action: net.wigle.wigleandroid.UPLOAD
+      - conditions:
+          - condition: trigger
+            id:
+              - leave_home
+        sequence:
+          - alias: If phone battery above 15%
+            if:
+              - type: is_battery_level
+                condition: device
+                device_id: <id-populated-by-ha-your-android-device>
+                entity_id: <id-your-android-device-battery>
+                domain: sensor
+                above: 15
+            then:
+              - service: notify.mobile_app_s23_your_phone
+                data:
+                  message: command_activity
+                  data:
+                    intent_package_name: net.openvpn.openvpn
+                    intent_action: net.openvpn.openvpn.CONNECT
+                    intent_class_name: net.openvpn.unified.MainActivity
+                    intent_extras: >-
+                      net.openvpn.openvpn.AUTOSTART_PROFILE_NAME:PC
+                      vpn.mydomain.eu [Home], 
+                      net.openvpn.openvpn.AUTOCONNECT:true
+                alias: Start OpenVPN and connect to Home
+              - alias: Open WiGLE app
+                service: notify.mobile_app_s23_your_phone
+                data:
+                  message: command_launch_app
+                  data:
+                    package_name: net.wigle.wigleandroid
+                enabled: true
+              - delay:
+                  hours: 0
+                  minutes: 0
+                  seconds: 5
+                  milliseconds: 0
+              - service: notify.mobile_app_s23_your_phone
+                data:
+                  message: command_broadcast_intent
+                  data:
+                    intent_package_name: net.wigle.wigleandroid
+                    intent_action: net.wigle.wigleandroid.SCAN
+                alias: Have WiGLE start scanning
+      - conditions:
+          - condition: trigger
+            id:
+              - enter_pret
+        sequence:
+          - service: notify.mobile_app_s23_your_phone
+            data:
+              message: command_launch_app
+              data:
+                package_name: com.pret.android
+            alias: Open Pret app
+      - conditions:
+          - condition: trigger
+            id:
+              - entered_shopping
+        sequence:
+          - service: notify.mobile_app_s23_your_phone
+            data:
+              message: Shopping? Open the shopping list!
+              title: Are you shopping?
+              data:
+                clickAction: /todo
+            alias: Go to Shopping List URL
+          - choose:
+              - conditions:
+                  - condition: zone
+                    entity_id: person.this_is_you
+                    zone: zone.tesco_express
+                  - condition: zone
+                    entity_id: person.this_is_you
+                    zone: zone.tesco_express_2
+                  - condition: zone
+                    entity_id: person.this_is_you
+                    zone: zone.tesco_extra
+                sequence:
+                  - alias: Open Tesco app
+                    service: notify.mobile_app_s23_your_phone
+                    data:
+                      message: command_launch_app
+                      data:
+                        package_name: com.tesco.grocery.view
+              - conditions:
+                  - condition: zone
+                    entity_id: person.this_is_you
+                    zone: zone.co_op
+                  - condition: zone
+                    entity_id: person.this_is_you
+                    zone: zone.coop_kingsmere
+                sequence:
+                  - alias: Open Co-op app
+                    service: notify.mobile_app_s23_your_phone
+                    data:
+                      message: command_launch_app
+                      data:
+                        package_name: com.cxloyalty.midcountiescoop
+              - conditions:
+                  - condition: zone
+                    entity_id: person.this_is_you
+                    zone: zone.sainsburys
+                sequence:
+                  - alias: Open Sainsbury's app
+                    service: notify.mobile_app_s23_your_phone
+                    data:
+                      message: command_launch_app
+                      data:
+                        package_name: com.sainsburys.ssa
+      - conditions:
+          - condition: trigger
+            id:
+              - entered_costa
+        sequence:
+          - alias: Open Costa app
+            service: notify.mobile_app_s23_your_phone
+            data:
+              message: command_launch_app
+              data:
+                package_name: uk.co.club.costa.costa
+      - conditions:
+          - condition: trigger
+            id:
+              - entered_rail_station
+        sequence:
+          - alias: Open National Rail app
+            service: notify.mobile_app_s23_your_phone
+            data:
+              message: command_launch_app
+              data:
+                package_name: uk.co.nationalrail.google
+mode: single
