@@ -1,0 +1,34 @@
+# Samsung frame art mode
+alias: TV Art
+sequence: 
+  - service: samsung_tv.set_art_mode
+    metadata: {}
+    data:
+      entity_id: media_player.samsung_tv
+mode: single
+icon: mdi:palette
+
+# Samsung frame app script
+alias: TV app Disneyplus
+sequence:
+  - service: media_player.play_media
+    target:
+      entity_id:
+        - media_player.samsung_tv
+    data:
+      media_content_type: app
+      media_content_id: MCmYXNxgcu.DisneyPlus
+mode: single
+icon: phu:disney-plus
+
+# Netflix
+# media_content_id: "3201907018807"
+
+# Plex
+# media_content_id: "kIciSQlYEM.plex"
+
+# Prime
+# media_content_id: "3201910019365"
+
+# Spotify
+# media_content_id: "rJeHar5IzDKqV.TizenYouTube"
