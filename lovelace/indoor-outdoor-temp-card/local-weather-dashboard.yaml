@@ -1,0 +1,156 @@
+  # from https://codeshare.io/8XpZmA from Hannes Nel
+  
+  - title: Local Weather
+    path: local-weather
+    icon: mdi:cloud-refresh-variant
+    badges: []
+    cards:
+      - type: custom:hourly-weather
+        entity: weather.home
+        icons: true
+        show_date: all
+        show_precipitation_amounts: true
+        show_precipitation_probability: true
+      - type: vertical-stack
+        cards:
+          - type: custom:compass-card
+            indicator_sensors:
+              - sensor: sensor.gw1100c_wind_direction
+            value_sensors:
+              - sensor: sensor.gw1100c_wind_speed
+            header:
+              title:
+                value: Home Local
+            language: en
+            compass:
+              north:
+                show: true
+          - type: entities
+            entities:
+              - entity: sensor.gw1100c_wind_gust
+                secondary_info: last-changed
+                name: Wind Gust
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.gw1100c_wind_speed
+              - sensor.gw1100c_wind_gust
+            stat_types:
+              - mean
+              - min
+              - max
+            days_to_show: 14
+            title: Wind Speed/Gust
+            hide_legend: true
+            logarithmic_scale: false
+      - type: vertical-stack
+        cards:
+          - type: custom:rain-gauge-card
+            entity: sensor.gw1100c_daily_rain_rate
+            is_imperial: false
+            hourly_rate_entity: sensor.gw1100c_hourly_rain_rate
+            show_warning: false
+            show_error: false
+            max_level: '10'
+          - type: entities
+            entities:
+              - entity: sensor.gw1100c_weekly_rain_rate
+                name: Weekly rate
+                secondary_info: last-updated
+              - entity: sensor.gw1100c_yearly_rain_rate
+                name: Yearly rate
+                secondary_info: last-updated
+              - entity: sensor.gw1100c_total_rain
+                name: Total
+                secondary_info: last-updated
+          - chart_type: bar
+            period: day
+            type: statistics-graph
+            entities:
+              - sensor.gw1100c_daily_rain_rate
+              - sensor.gw1100c_total_rain
+            stat_types:
+              - state
+            hide_legend: true
+            logarithmic_scale: false
+            days_to_show: 14
+            title: Rain
+      - type: custom:mini-graph-card
+        entities:
+          - entity: sensor.gw1100c_uv_index
+            name: Local Station
+          - color: gray
+            entity: input_boolean.nighttime
+            name: Night
+            show_line: false
+            show_points: false
+            show_legend: false
+            y_axis: secondary
+        color_thresholds:
+          - value: 1
+            color: '#a2ff00'
+          - value: 4
+            color: '#ffa200'
+          - value: 8
+            color: '#ff3300'
+        show:
+          labels: true
+          labels_secondary: true
+          average: true
+          extrema: true
+      - type: vertical-stack
+        cards:
+          - type: entity
+            entity: sensor.temperature_comparison
+            state_color: true
+          - type: custom:mini-graph-card
+            entities:
+              - entity: sensor.gw1100c_indoor_temperature
+                name: Indoor Temp
+              - entity: sensor.gw1100c_outdoor_temperature
+                name: Outdoor Temp
+              - color: gray
+                entity: input_boolean.nighttime
+                name: Night
+                show_line: false
+                show_points: false
+                show_legend: false
+                y_axis: secondary
+            color_thresholds:
+              - value: 5
+                color: '#0000ff'
+              - value: 16
+                color: '#00a2ff'
+              - value: 20
+                color: '#ffbb00'
+              - value: 30
+                color: '#ff6200'
+            show:
+              labels: true
+              labels_secondary: true
+              average: true
+              extrema: true
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.gw1100c_humidity
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            name: Humidity
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.gw1100c_solar_lux
+            line_color: '#e74c3c'
+            line_width: 8
+            font_size: 75
+            name: Solar Lux
+          - type: custom:mini-graph-card
+            entities:
+              - sensor.gw1100c_absolute_pressure
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            name: A.pressure

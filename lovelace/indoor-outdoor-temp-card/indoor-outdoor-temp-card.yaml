@@ -1,0 +1,32 @@
+type: vertical-stack
+cards:
+- type: entity
+  entity: sensor.temperature_comparison
+  state_color: true
+- type: custom:mini-graph-card
+  entities:
+    - entity: sensor.gw1100c_indoor_temperature
+      name: Indoor Temp
+    - entity: sensor.gw1100c_outdoor_temperature
+      name: Outdoor Temp
+      color: gray
+    - entity: input_boolean.nighttime
+      name: Night
+      show_line: false
+      show_points: false
+      show_legend: false
+      y_axis: secondary
+      color_thresholds:
+        - value: 5
+          color: '#0000ff'
+        - value: 16
+          color: '#00a2ff'
+        - value: 20
+          color: '#ffbb00'
+        - value: 30
+          color: '#ff6200'
+      show:
+        labels: true
+        labels_secondary: true
+        average: true
+        extrema: true
