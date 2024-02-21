@@ -6,4 +6,4 @@ I've found or built different automations, scripts and lovelace dashboard cards 
 
 ## Where did these come from?
 
-The internet. I may be using some of these depending on if I have the components that are required. However, most of these are ideas or yaml that is provided by someone else. These are examples of things you CAN do with Home Assistant and therefore you should be able to copy them and modify to use in your environments. You then tweak them for your settings.
+Mainly, the internet. I also put some of the stuff that I have created or I have taken from someone else. I may be using some of these depending on if I have the components that are required. However, most of these are ideas or yaml that is provided by someone else. These are examples of things you CAN do with Home Assistant and therefore you should be able to copy them and modify to use in your environments. You then tweak them for your settings.
