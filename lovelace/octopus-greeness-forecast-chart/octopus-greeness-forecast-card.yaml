@@ -1,0 +1,31 @@
+type: custom:apexcharts-card
+experimental:
+  color_threshold: true
+header:
+  show: true
+  title: Greenness Forecast
+graph_span: 7d
+span:
+  start: hour
+apex_config:
+  chart:
+    height: 135
+  stroke:
+    width: 4
+series:
+  - entity: sensor.octopus_energy_a_XXXXXXXXXX_greenness_forecast_current_index
+    name: Forecast
+    show:
+      in_header: false
+      legend_value: false
+    color_threshold:
+      - value: 0
+        color: red
+      - value: 40
+        color: orange
+      - value: 80
+        color: green
+    data_generator: |
+      return entity.attributes.forecast.slice(0, 7).map((entry) => {
+      return [new Date(entry.start), entry.greenness_score];
+        });
