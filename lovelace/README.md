@@ -1,5 +1,7 @@
-# home-assistant-examples
-This repo will have example yaml for Home Assistant automations, scripts, lovelace dashboard cards.
+# lovelace examples
 
-I've found or built different automations, scripts and lovelace dashboard cards that I think work well or look nice and I'm sure people are going to be interested in. I will try to include a screenshot, the yaml and some documentation on how to put it together and how to replace the sensors to fit your setup. 
+In this section I try to show snippets of yaml for different customisations.
 
+One cool gist that came from the indoor-outdoor-temp-card discussion is:
+
+[wind](https://gist.github.com/lennon101/3663ba930c7c97c6fc7b2f8ecf93bec5)
