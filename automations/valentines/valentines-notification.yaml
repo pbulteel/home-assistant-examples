@@ -1,0 +1,42 @@
+id: "[some guid]"
+alias: Valentines Messages
+description: ""
+trigger:
+  - platform: time
+    at:
+      - "08:00"
+      - "09:00"
+      - "10:00"
+      - "11:00"
+      - "12:00"
+      - "13:00"
+      - "14:00"
+      - "15:00"
+      - "16:00"
+      - "17:00"
+      - "18:00"
+      - "19:00"
+      - "20:00"
+      - "21:00"
+      - "22:00"
+      - "23:00"
+condition: >
+  {{ now().strftime('%F') == (now().strftime('%Y') | int ) ~ "-02-14" }}
+action:
+  - delay: "{{ range(0, 20*60+1) | random }}"
+  - data_template:
+      message: >
+        {% set sayings = state_attr("input_select.valentines_sayings","options") %}
+        {% set count = states("input_number.valentines_run_count")|int %}
+        {% set saying = sayings[count] %}
+        {{ saying }}
+      title: To My Valentine
+      data:
+        image: >-
+          {{ states.input_text.base_url.state }}/local/images/heart.jpg
+        ttl: 0
+        priority: high
+    service: notify.mobile_app_joslyn_phone
+  - service: input_number.increment
+    target:
+      entity_id: input_number.valentines_run_count
