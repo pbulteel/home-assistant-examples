@@ -1,0 +1,12 @@
+# Code taken from facebook post by Hannes Nel
+template:
+  sensor:
+    - name: temperature_comparison
+      state: >
+        {% if states('sensor.gw1100c_outdoor_temperature') | float > states('sensor.gw1100c_indoor_temperature') | float %}
+          It's hotter outside than inside.
+        {% elif states('sensor.gw1100c_outdoor_temperature') | float < states('sensor.gw1100c_indoor_temperature') | float %}
+          It's colder outside than inside.
+        {% else %}
+          The temperature inside and outside is the same.
+        {% endif %}
