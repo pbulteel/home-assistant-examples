@@ -1,0 +1,52 @@
+  {# Event Report #}
+  {%- macro welcomebriefing() -%}
+  <speak>
+    {% set person = expand('group.arriving')|map(attribute='name')|join(' and ') %}
+    {% set peoplecount = expand('group.arriving') | count %}
+
+    {% if peoplecount == 0 %}
+      Welcome home.
+    {% else %}
+      {% if peoplecount == 1 %}
+        {% set is_are = ' is ' %}
+        {% set has_have = ' has ' %}
+      {% else %}
+        {% set is_are = ' are ' %}
+        {% set has_have = ' have ' %}
+      {% endif %}
+      {%- macro greeting_sentence(person, is_are, has_have) -%}
+      {{ [
+        "Welcome back home " ~ person,
+        "Hey" ~ person + "! High Five! Glad you are finally home.",
+        "Welcome home " ~ person
+        ] | random }}"Welcome back home " ~ person,
+      {%- endmacro -%}
+      {{greeting_sentence(person, is_are, has_have)}}
+    {% endif %}
+   {{ [
+      'It was pretty quiet while you were gone.', 
+      'Glad to see you made it back.',
+      'Hopefully nothing too crazy happened out there.',
+      'I would love to hear about your adventures. ... On second thought I do not care.'
+      ] | random }}
+
+    For your information, the internal humidity is currently {{ states.sensor.inside_humidity_stats.state }} percent
+    while the upstairs temperature is around {{ states.sensor.upstairs_temperature.state }} degrees and downstairs temperature it's {{ states.sensor.downstairs_temperature.state }} degrees.
+
+    {% from appliance.jinja import washer_needs_emptying() %}
+    {{ asher_needs_emptying() }} 
+    {% from appliance.jinja import dryer_needs_emptying() %}
+    {{ dryer_needs_emptying() }}  
+
+    {% set numlights = (states.light | selectattr('state', 'eq', 'on') | list | count) | int %}
+    {% if numlights == 1 %} 
+      {% set is_are_light = "is" %} 
+      {% set light_lights = "light" %} 
+    {% else %} 
+      {% set is_are_light = "are" %} 
+      {% set light_lights = "lights" %} 
+    {% endif %}
+    There {{ is_are_light }} currently {{ numlights }} {{ light_lights }} on. 
+  </speak>
+  {%- endmacro -%}
+

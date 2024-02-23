@@ -1,0 +1,75 @@
+  {# Nightly Report #}
+  {%- macro sundownbriefing() -%}
+      Good evening.
+
+      It is {{ now().strftime("%I:%M %p") }}
+
+      {% if is_state('sun.sun', 'below_horizon') %}
+        You have
+        {% set seconds = as_timestamp(states.sun.sun.attributes.next_rising)-now().timestamp() %}
+        {% set hours = seconds / 60 %}
+        {% if seconds / ( 60 * 60 ) > 1 %}
+          {{ (seconds //  ( 60 * 60 )) | int }} hours
+        {% else %}
+          {{ (seconds // 60) | int }} minutes
+        {% endif %}
+        {{ [
+          'until the sun rises.',
+          'until the sun is up.',
+          'before the sun officially rises. '
+        ]|random }}
+      {% else %}
+        You have
+        {% set seconds = as_timestamp(states.sun.sun.attributes.next_setting)-now().timestamp() %}
+        {% set hours = seconds / 60 %}
+        {% if seconds / ( 60 * 60 ) > 1 %}
+          {{ (seconds //  ( 60 * 60 )) | int }} hours
+        {% else %}
+          {{ (seconds // 60) | int }} minutes
+        {% endif %}
+        {{ [
+          'until the sun sets for the day.',
+          'until the sun slips below the horizon.',
+          'before the sun officially sets. ',
+          'before The sun has been ushered off the stage.'
+        ]|random }}
+      {% endif %}
+      
+
+      {{ [
+          'Exterior Cameras are now motion activated, and the back porch light is on.',
+          'I have turned on the back porch light and armed the perimiter cameras.',
+          'You are running out of daylight. Time to wrap up any outside chores. The ouside lights have been turned on.',
+          'Switching  House to night mode! back porch lights are on and the ouside cameras are recording when motion has been detected.',
+          'The house has been configured for night.',
+          'Switching on house exterior lighting, and armed the cameras.',
+          'It is getting dark outside, so I am turning on the outside lights.',
+          'The sun is setting so it is ime to turn on the back lights.',
+          'If you have not looked outside lately, the light of the day is almost gone. I am turning on the outside lights.'
+      ]|random }}
+      
+        {% if is_state('sensor.today_is', 'Monday') %}
+            {% if now().strftime('%H')|int > 17 %}
+            {{ [ 'Do not forget tomorrow is Trash collection Day. ',
+              'I advise you move the trash cans to the curb for the weekly pickup. ',
+              'I think you need to put the trash cans out since it Monday. ',
+              'I would bring in the trash cans in but I lack legs. And Arms. So I am forced to rely on you. Do not let me down.'
+              ' The trash and recycle should go out'
+            ] | random }}
+            {% endif %}
+          {% endif %}
+      
+        {% if is_state('sensor.today_is', 'Tuesday') %}
+          
+          {% if now().strftime('%H')|int > 17 %}
+            {{ [ 'Do not forget to bring in the trash cans. ',
+            'The trash cans will feel lonely if you leave them out all night. ',
+            'The trash cans cannot come in by themselves. ',
+            'The trash cans are still out on the street. You might not find them when you go dump the trash. ',
+            'The neighbours will get mad if you leave those trash cans out on the street.'
+          ] | random }}
+          {% endif %}
+        {% endif %}
+      
+  {%- endmacro -%}
+

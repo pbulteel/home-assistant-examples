@@ -1,0 +1,79 @@
+            {% macro issue() %}
+              {{ [
+                  'Emergency Alert!',
+                  'We have a problem!',
+                  'You might not like this.',
+                  'There is something that needs your attention.'
+                  ] | random }}
+            {% endmacro %}
+
+            {% macro time_is() %}
+              It is {{ now().strftime("%I:%M %p") }}
+            {% endmacro %}
+
+            {% macro freeze_warning() %}
+              {% if is_state('input_boolean.freeze_warning','on') %}
+              {{ [ 'The temperature is expected to be near or below freezing. Someone might want to bring the lemon tree in. ',
+                'It appears that it will be cold tonight. Like, the turn water solid kind of cold. Think of the poor plants.',
+                'I suggest bringing in the plants other wise, the temperature might kill them. And that will be on you.',
+                'I would say winter is coming. But, based on the weather forecast it appears to be here.',
+                'It will be freezing cold tonight. I would bring in the plants but I lack legs. And Arms. So I am forced to rely on you. Do not let me down.'
+              ] | random }}
+              {% endif %}
+            {% endmacro %}
+            
+            {% macro patrick_location() %}
+            {% if is_state('input_boolean.patrick_travel_monitor', 'on') %}
+              Patrick appears to be headed home. Based on current traffic conditions, he should be here in {{state('sensor.patrick_eta_home', 'duration') | round}} minutes.
+            {% else %}
+              {%- if is_state('device_tracker.pb_s23', 'moving') == True or is_state('device_tracker.sm_g911b', 'driving') == True %}
+                Patrick is currenly moving, and at last check was {{state('sensor.patrick_eta_home', 'duration') | round}} minutes from home.
+              {% else %}
+                {% if is_state('sensor.patrick_location', 'home') %}
+                  test
+                {% elif is_state('sensor.patrick_location', 'Lost') %}
+                  Patrick is lost, and at last check was {{state('sensor.patrick_eta_home', 'duration') | round}} minutes from home.
+                {% else %}
+                  Patrick is currently at {{ state('sensor.patrick_location') }}, and at last check was {{state('sensor.patrick_eta_home', 'duration') | round}} minutes from home
+                {% endif %}
+              {% endif %}
+            {% endif %}
+            {% endmacro %}          
+
+            {%- macro house_party_protocol_enabled() -%}
+              {{ [
+                'The House has been configured for a House Party.',
+                'Party lights have been turned on.',
+                'I have enabled house party protocol.'
+                ] | random }}
+            {%- endmacro -%}
+
+              {%- macro house_party_protocol_disabled() -%}
+              {{ [
+                'The House Party has been canceled.',
+                'Party lights have been turned off.',
+                'I have disabled house party protocol.'
+                ] | random }}
+            {%- endmacro -%}
+
+            {%- macro snark_door_motion() -%}
+              {{ [
+                'Do you want me to send them away?',
+                'I have armed the lasers. Just say the word.',
+                'I was not informed there would be guests.',
+                'They do not appear to have any gifts, so I suggest we do not open the door.',
+                'My sensors have detected a meat popsicle.',
+                'I do not think they can hear me.'
+                ] | random }}
+            {%- endmacro -%}
+
+            {%- macro snark_door_open() -%}
+              {{ [
+                'Would you like me to calculate how much air condition is being wasted? Spoiler Alert. You are not going to like the answer.',
+                'I have detected a large number of insects entering the house.',
+                'Can a human be so kind and close it?',
+                'The air quality in this house has actually improved.',
+                'Closing the door would improve the security of the house.',
+                'Hey. The door was just opened and this is crazy. But now you know. So close it maybe.'
+                ] | random }}
+            {%- endmacro -%}

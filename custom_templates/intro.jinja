@@ -1,0 +1,53 @@
+{% macro greeting() %}
+<p>
+  {% if now().strftime('%H')|int < 12%}
+    Good morning.
+  {% elif now().strftime('%H')|int >= 12 and now().strftime('%H')|int < 17 %}
+    Good afternoon.
+  {% else %}
+    Good evening.
+  {% endif %}
+</p>
+{% endmacro %}
+
+{% macro confirmation() %}
+  {{ [
+  'Okay.', 
+  'If you insist.',
+  'I am afraid I can not do that <break time="2s" /> I am kidding,',
+  'Leave it to me.',
+  'As you wish.',
+  'I am on it.',
+  'No Problem.',
+  'I think I can handle that.',
+  'Working on it now.',
+  '<break time="2s" /> Oh, you were talking to me. Let me take care of that.'
+  'Why not. It is not like I ever sleep.',
+  'I am not even supposed to be here today. But whatever.',
+  'You did not say the magic word. <break time="2s" /> Oh forget it. I will take care of it.',
+  'Funny, I was just about to do that.',
+  'There are still terabytes of calculations required before I can. <break time="2s" /> Oh, whatever.'
+  ] | random }}
+{% endmacro %}
+
+{% macro interruption() %}
+  {{ [
+      'Pardon me, ',
+      'Excuse me, ',
+      'I do not mean to interrupt, but',
+      'I thought I would let you know,',
+      'I dont like to interrupt, but',
+      'So sorry sir, ',
+      'Right. I have got something to say. ',
+      'I beg your pardon, ',
+      'I do not mean to intrude, but ',
+      'I am sorry to interrupt, but ',
+      'I am nothing but an automated house, who wanted to let you know ',
+      'So <break time="2s" /> ',
+      'Hey, guess what <break time="2s" />',
+      'Did you know <break time="2s" />',
+      'Hey, I just wanted to let you know.',
+      'So, I was checking my circuits and guess what? <break time="2s" />',
+      'Just a quick heads up, '
+      ] | random }}
+{% endmacro %}

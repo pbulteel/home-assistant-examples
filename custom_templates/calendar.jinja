@@ -1,0 +1,54 @@
+{% macro halloween_yet() %}
+   {% if states('sensor.anniversary_halloween') | int == 1 %}
+      Tomorrow is Halloween. I hope you have picked out a costume.
+      {{ [ 'I will be going as a dumb home. ',
+      'I have prepped the scary music. Just in case.',
+      'I will be going as HAL 9000. The Pod Bay Doors are being installed today. I dare you to ask me to open them. ',
+      'Have you thought about how scary you want me to be?. '
+    ] | random }}
+    {% elif states('sensor.anniversary_halloween') | int < 30 %}
+      There are only {{states('sensor.anniversary_halloween')}} days 
+      {{ [ 'until Halloween.',
+        'until Halloween. It might not be enough time. ',
+        'and counting until the best holiday ever.',
+        'until you need a costume.'
+      ] | random }} 
+    {% else %}  
+    {% endif %}
+{% endmacro %}
+
+{% macro christmas_yet() %}
+    {% if states('sensor.anniversary_christmas_day') | int == 1 %}
+      Tomorrow is Christmas. ... It is practically here! ... Santa is coming tonight! Do not forget the cookies!
+    {% elif states('sensor.anniversary_christmas_day') | int < 31 %}
+      There are only {{states('sensor.anniversary_christmas_day')}} days until christmas.
+      {{ [ 'All I want for Christmas, is a hippopotamus.',
+      'Hey Christian, I know what you are getting for Christmas. But I am not telling.',
+      'Do not forget to put something under the tree for your favorite smarthome. I could use some door sensors.',
+      'It is starting to smell a lot like Christmas. Or it could be the christmas tree is on fire.',
+      'I do not want to be a smarthome. I want to be a dentist.',
+      'Remember the time that we all got snowed in? Good times.',
+      'Do not eat all the cookies. ',
+      'And we are going to get flooded with Christmas music!',
+      ] | random }} 
+    {% else %}
+    {% endif %}
+{% endmacro %}
+
+{% macro holiday_in_uk() %}
+    {% if is_state('calendar.holidays_in_united_kingdom', 'on') %}
+    Today is {{state('calendar.holidays_in_united_kingdom', 'message')}}. 
+    {% endif %}
+{% endmacro %}
+
+{% macro birthdays() %}
+    {% if is_state('calendar.birthdays', 'on') %}
+    Today is {{ state('calendar.birthdays', 'message') }} birthday! So Happy Birthday! The confetti cannon is not working otherwise I would shower you in paper garbage that someone else would have to pick up.
+    {% endif %}
+{% endmacro %}
+
+{% macro calendar_status() %}
+{% if is_state('calendar.patrick', 'on') %} 
+Please remember that you have {{ state('calendar.patrick', 'message') }} at {{ state('calendar.patrick', 'start_time') }}
+{% endif %}
+{% endmacro %}

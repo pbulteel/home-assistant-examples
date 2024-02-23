@@ -1,0 +1,30 @@
+  {%- macro solarreport() -%}
+      <p>
+        {% if not is_state('sensor.power_highest_peak_time_today', 'unavailable') %}
+        It looks like the solar panels will be producing the most power at {{ as_timestamp(states('sensor.power_highest_peak_time_today')) | timestamp_custom('%I:%M %p', False)  }}. 
+        We should make around {{ states('sensor.energy_production_today') }} {{ state_attr('sensor.energy_production_today', 'unit_of_measurement')}}.
+        {% if (states('sensor.energy_production_today') | int > 3) %}
+	   {% if (states('sensor.bunny_battery') | int < 65) or (states('sensor.battery') | int < 65) %}
+	      {{ [
+		  'Cars look like they could use a charge.',
+		  'How about charging a car or two?',
+		  "Don't send it to the grid, put it in a car.",
+		] | random }}
+	  {% endif %}
+	
+	{{ [ 
+           'So should be a good day to do laundry.',
+	   'Think laundry day.',
+           'Maybe the laundry could be done?',
+	   "I'm only a house, but you could do your laundry.",
+           ] | random }}
+	   
+        {% else %}
+           You might want to only do some basic things as there's not a lot being generated.
+        {% endif %}
+        {% else %}
+         Go outside to see if the weather is nice.
+        {% endif%}
+        </p>
+  {%- endmacro -%}
+

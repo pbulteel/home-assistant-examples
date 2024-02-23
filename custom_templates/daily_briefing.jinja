@@ -1,0 +1,270 @@
+  {# Daily Briefing #}
+  {%- macro dailybrief() -%}
+
+    {% if now().strftime('%H')|int < 12 %}
+      Good morning.
+    {% elif now().strftime('%H')|int >= 12 and now().strftime('%H')|int < 17 %}
+      Good afternoon.
+    {% else %}
+      Good evening.
+    {% endif %}
+
+
+    {% if is_state('binary_sensor.morning','on') %}
+      Today is {{states('sensor.today_is') }}, {{ as_timestamp(now()) | timestamp_custom('%B %d %Y') }}.
+    {% else %}
+      It is {{ now().strftime("%I:%M %p") }}.
+    {% endif %}
+
+
+    The Weather in Bicester is {{states('sensor.bicester_temperature_3_hourly')|round}} degrees 
+    {% if is_state('weather.home', 'rainy') %}
+      {{ [
+      'with rain.', 
+      'with showers.'
+      ] | random }}
+    {% elif is_state('weather.home', 'cloudy') %}
+      {{ [
+      'with clouds.', 
+      'with cloudy skies.'
+      ] | random }}
+    {% elif is_state('weather.home', 'partlycloudy') %}
+      {{ [
+      'with some clouds.', 
+      'with partly cloudy skies.',
+      'with scattered clouds'
+      ] | random }}
+    {% elif is_state('weather.home', 'sunny') %}
+      {% if is_state('sun.sun', 'above_horizon') %}
+        {{ [
+        'and sunny.', 
+        'with sun.'
+        ] | random }}
+      {% else %}
+        {{ [
+        'and clear.', 
+        'with clear skies.'
+        ] | random }}
+      {% endif %}
+    {% else %}
+      and {{ states('weather.home') }}
+    {% endif %}
+
+    {% if is_state('binary_sensor.evening','on') %}
+      The overnight forecast says we can expect {{ states('sensor.bicester_weather_3_hourly') }}    
+    {% else %}
+      The current forecast says we should expect 
+      {% if is_state('sensor.bicester_weather_3_hourly', 'rainy') %}
+        {{ [
+        ' rain.', 
+        ' showers.'
+        ] | random }}
+        The probablility of rain is {{ states('sensor.bicester_probability_of_precipitation_3_hourly') }} %.
+      {% elif is_state('sensor.bicester_weather_3_hourly', 'cloudy') %}
+        {{ [
+        ' clouds.', 
+        ' cloudy skies.'
+        ] | random }}
+      {% elif is_state('sensor.bicester_weather_3_hourly', 'partlycloudy') %}
+        {{ [
+        ' some clouds.', 
+        ' partly cloudy skies.',
+        ' scattered clouds'
+        ] | random }}
+      {% elif is_state('sensor.bicester_weather_3_hourly', 'sunny') %}
+        {% if is_state('sun.sun', 'above_horizon') %}
+          {{ [
+          ' and sunny.', 
+          ' with sun.'
+          ] | random }}
+        {% else %}
+          {{ [
+          ' clear skies.', 
+          ' some clear skies.'
+          ] | random }}
+        {% endif %}
+      {% else %}
+        and {{ states('weather.home') }}
+      {% endif %}
+
+      {% if is_state('input_boolean.freeze_warning','on') %}
+        And based on the forecasted low, It will be near or below freezing.
+        {{ [ 'So, Someone might want to bring the lemon tree in. ',
+        'Like, the turn water solid kind of cold. Do not leave the lemon tree out to die.',
+        'I suggest bringing in the plants otherwise, the temperature might kill them. And that will be on you.',
+        'I would say winter is coming. But, based on the weather forecast it appears to be here.',
+        'I would bring in the plants but I lack legs. And Arms. So I am forced to rely on you. Do not let me down.'
+        ] | random }}
+      {% endif %}
+    {% endif %}
+
+    {% if is_state('sun.sun', 'below_horizon') %}
+      You have
+      {% set seconds = as_timestamp(state_attr('sun.sun', 'next_rising'))-now().timestamp() %}
+      {% set hours = seconds / 60 %}
+      {% if seconds / ( 60 * 60 ) > 1 %}
+        {{ (seconds //  ( 60 * 60 )) | int }} hours
+      {% else %}
+        {{ (seconds // 60) | int }} minutes
+      {% endif %}
+      {{ [
+        'until the sun rises.',
+        'until the sun is up.',
+        'before the sun officially rises. '
+      ]|random }}
+    {% else %}
+      You have
+      {% set seconds = as_timestamp(state_attr('sun.sun', 'next_setting'))-now().timestamp() %}
+      {% set hours = seconds / 60 %}
+        {% if seconds / ( 60 * 60 ) > 1 %}
+          {{ (seconds //  ( 60 * 60 )) | int }} hours
+        {% else %}
+          {{ (seconds // 60) | int }} minutes
+        {% endif %}
+      {{ [
+      'until the sun sets for the day.',
+      'until the sun slips below the horizon.',
+      'before the sun officially sets. '
+      ]|random }}
+    {% endif %}
+
+    {% if is_state('binary_sensor.evening','on') %}
+      {% if is_state('sensor.today_is', 'Sunday') or is_state('sensor.today_is', 'Wednesday') %}
+        {{ [ 'Do not forget tomorrow we get eggs and juice, so put out the empty bottles. ',
+        ' The empty bottles should go out.',
+        ' Please put out the glass bottles for collection.'
+        ] | random }}
+      {% endif %}
+
+      {% if is_state('sensor.today_is','Monday') %}
+        {{ [ 'Do not forget tomorrow is Trash Day. ',
+        ' The trash and recycle should go out.'
+        ] | random }}
+      {% endif %}
+    {% endif %}
+
+    {% if is_state('sensor.today_is', 'Tuesday') %}
+      {% if is_state('binary_sensor.evening','on') %}
+        {{ [ 'Do not forget to bring in the trash cans. ',
+        'The trash cans will feel lonely if you leave them out all night. ',
+        'I will get mad if you leave those trash cans out on the street.'
+        ] | random }}
+      {% endif %}
+      {% if is_state('binary_sensor.morning','on') %}
+        {{ [ 'Today is Trash Day.',
+        ' The trash and recycle should go out this morning.',
+        'Do not forget to take the trash out.'
+        ] | random }}
+      {% endif %}
+    {% endif %}
+
+    {% if is_state('binary_sensor.evening','on') %}
+
+    {% from calendar.jinja import halloween_yet %}
+    {% call halloween_yet %}
+
+    {% from calendar.jinja import christmas_yet %}
+    {% call christmas_yet %}
+
+    {% else %}
+
+      {% if is_state('sensor.anniversary_halloween','0') %}
+        Happy Halloween!
+      {% endif %}
+
+      {% if is_state('sensor.anniversary_christmas_eve','0') %}
+        Merry Christmas!
+      {% endif %}
+
+    {% endif %}
+
+    {%- if is_state('sensor.dryer_status','complete') %}
+      The dryer has completed its drying cycle 
+      {% set seconds = now().timestamp() - as_timestamp(states.sensor.dryer_status.last_changed) %}
+      {% set hours = seconds / 60 %}
+      {% if (seconds / ( 60 * 60 )) | int == 1 %}
+        over an hour ago.
+        {{ [
+        'Do not forget to fold the clothes.', 
+        'Was someone going fold the laundry?',
+        'The dryer is done. Done I said...',
+        'Put. The. Clothes. Away.',
+        'I think the clothes are ready to be folded and put away.',
+        'Once you fold the laundry I will stop reminding you to do it. So if you want me to stop. Its up to you.'
+        ] | random }}
+      {% elif (seconds / ( 60 * 60 )) | int > 1 and (seconds / ( 60 * 60 )) | int < 6 %}
+        over {{ (seconds //  ( 60 * 60 )) | int }} hours ago.
+        {{ [
+        'Much longer and you might as well just put them on.', 
+        'Someone needs to fold the laundry.',
+        'Do not forget about the clothes in the dryer.',
+        'Surely you did not mean to forget about the clothes. ',
+        'Do you you think your clothes are going to fold themselves? I can tell you that wont happen.',
+        'Youre not expecting me to do this, right? Right?'
+        ] | random }}
+      {% elif (seconds / ( 60 * 60 )) | int > 6 %}
+        over {{ (seconds //  ( 60 * 60 )) | int }} hours ago.
+        {{ [
+        'That is a long, long, long time.', 
+        'What are you waiting for? Fold them and put them away.',
+        'You might as well just buy new clothes as these are going to be out of fashion.',
+        'By the time you put these on, there will be a new fashion out.',
+        'So did you think magic elves will appear and fold them for you?'
+        ] | random }}                  
+      {% else %}
+        {{ (seconds // 60) | int }} minutes ago.
+        {{ [
+        'Do not forget to fold, I repeat, fold the clothes.', 
+        'Someone needs to fold the clothes and put them away.',
+        'Time to do some folding.',
+        'The folding at home project was not about clothes. But you have to do it.',
+        'You might want to fold them. You see, I cant fold them for you.'
+        ] | random }}            
+      {% endif %}
+    {% endif %}
+
+    {%- if is_state('sensor.washer_status','complete') %}
+      The washing machine completed its cycle 
+      {% set seconds = now().timestamp() - as_timestamp(states.sensor.washer_status.last_changed) %}
+      {% set hours = seconds / 60 %}
+      {% if (seconds / ( 60 * 60 )) | int == 1 %}
+        over an hour ago.
+        {{ [
+        'Do not forget to move the clothes.', 
+        'The dirt is gone. Now time to dry.',
+        'I did my job, now time to do yours.',
+        'Was someone going to move the laundry to the dryer?',
+        'Once you rotate the laundry I will stop reminding you to do it. So if you want me to stop. Its up to you.'
+        ] | random }}
+      {% elif (seconds / ( 60 * 60 )) | int > 1 and (seconds / ( 60 * 60 )) | int < 6 %}
+        over {{ (seconds //  ( 60 * 60 )) | int }} hours ago.
+        {{ [
+        'Much longer and you are going to need to wash them again.', 
+        'Someone needs to rotate the laundry.',
+        'Do not forget about the clothes in the washing machine.',
+        'Surely you did not mean to forget about the clothes. Mistakes happen. But you can still fix it.',
+        'Do you like your clothes smelling like mildew? Becasue that is what is happening right now.'
+        ] | random }}
+      {% elif (seconds / ( 60 * 60 )) | int > 6 %}
+        over {{ (seconds //  ( 60 * 60 )) | int }} hours ago.
+        {{ [
+        'That is a crazy amount of time.', 
+        'Did you decide you want those clothes to suffer?',
+        'You might as well just rewash those clothes.',
+        'I can smell the mildew. Virtually that is.',
+        'Surely you did not mean to forget about the clothes.'
+        ] | random }}
+      {% else %}
+        {{ (seconds // 60) | int }} minutes ago.
+        {{ [
+        'Do not forget to rotate the clothes.', 
+        'Done with the washing and waiting to start drying.',
+        'The clothes smell wonderful ... for now.',
+        'Now all you need to do is take a shower.',
+        'Someone forgot to move the clothes to the dryer. I am not going to name names, but there is a camera in there. Do I need to publically shame someone?',
+        'You might want to move them to the dryer.'
+        ] | random }}
+      {% endif %}
+    {% endif %}
+  {%- endmacro -%}
+

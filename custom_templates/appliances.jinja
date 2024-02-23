@@ -1,0 +1,93 @@
+
+            {%- macro dryer_needs_emptying() -%}
+              {%- if is_state('sensor.dryer_status','complete') %}
+                The dryer has completed its drying cycle 
+                {% set seconds = now().timestamp() - as_timestamp(states.sensor.dryer_status.last_changed) %}
+                {% set hours = seconds / 60 %}
+                {% if (seconds / ( 60 * 60 )) | int == 1 %}
+                  over an hour ago.
+                  {{ [
+                  'Do not forget to fold the clothes.', 
+                  'Was someone going fold the laundry?',
+                  'The dryer is done. Done I said...',
+                  'Put. The. Clothes. Away.',
+                  'I think the clothes are ready to be folded and put away.',
+                  'Once you fold the laundry I will stop reminding you to do it. So if you want me to stop. Its up to you.'
+                  ] | random }}
+                {% elif (seconds / ( 60 * 60 )) | int > 1 and (seconds / ( 60 * 60 )) | int < 6 %}
+                  over {{ (seconds //  ( 60 * 60 )) | int }} hours ago.
+                  {{ [
+                  'Much longer and you might as well just put them on.', 
+                  'Someone needs to fold the laundry.',
+                  'Do not forget about the clothes in the dryer.',
+                  'Surely you did not mean to forget about the clothes. ',
+                  'Do you you think your clothes are going to fold themselves? I can tell you that wont happen.',
+                  'You are not expecting me to do this. Right?'
+                  ] | random }}
+                {% elif (seconds / ( 60 * 60 )) | int > 6 %}
+                  over {{ (seconds //  ( 60 * 60 )) | int }} hours ago.
+                  {{ [
+                  'That is a long, long, long time.', 
+                  'What are you waiting for? Fold them and put them away.',
+                  'You might as well just buy new clothes as these are going to be out of fashion.',
+                  'By the time you put these on, there will be a new fashion out.',
+                  'So did you think magic elves will appear and fold them for you?'
+                  ] | random }}                  
+                {% else %}
+                  {{ (seconds // 60) | int }} minutes ago.
+                  {{ [
+                  'Do not forget to fold the clothes.', 
+                  'Someone needs to fold the clothes and put them away.',
+                  'Time to do some folding.',
+                  'The folding at home project was not about clothes. But you have to do it.',
+                  'You might want to fold them. I cant fold them for you.'
+                  ] | random }}            
+                {% endif %}
+              {% endif %}
+            {% endmacro %}
+
+            {%- macro washer_needs_emptying() -%}
+              {%- if is_state('sensor.washer_status','complete') %}
+                The washing machine completed its cycle 
+                {% set seconds = now().timestamp() - as_timestamp(states.sensor.washer_status.last_changed) %}
+                {% set hours = seconds / 60 %}
+                {% if (seconds / ( 60 * 60 )) | int == 1 %}
+                  over an hour ago.
+                  {{ [
+                  'Do not forget to move the clothes.', 
+                  'The dirt is gone. Now time to dry.',
+                  'I did my job, now time to do yours.',
+                  'Was someone going to move the laundry to the dryer?',
+                  'Once you rotate the laundry I will stop reminding you to do it. So if you want me to stop. Its up to you.'
+                  ] | random }}
+                {% elif (seconds / ( 60 * 60 )) | int > 1 and (seconds / ( 60 * 60 )) | int < 6 %}
+                  over {{ (seconds //  ( 60 * 60 )) | int }} hours ago.
+                  {{ [
+                  'Much longer and you are going to need to wash them again.', 
+                  'Someone needs to rotate the laundry.',
+                  'Do not forget about the clothes in the washing machine.',
+                  'Surely you did not mean to forget about the clothes. <break time="2s" /> Mistakes happen. But you can still fix it.',
+                  'Do you like your clothes smelling like mildew? <break time="1s" /> Because that is what is happening right now.'
+                  ] | random }}
+                {% elif (seconds / ( 60 * 60 )) | int > 6 %}
+                  over {{ (seconds //  ( 60 * 60 )) | int }} hours ago.
+                  {{ [
+                  'That is a crazy amount of time.', 
+                  'Did you decide you want those clothes to suffer?',
+                  'You might as well just rewash those clothes.',
+                  'I can smell the mildew. Virtually that is.',
+                  'Surely you did not mean to forget about the clothes.'
+                  ] | random }}
+                {% else %}
+                  {{ (seconds // 60) | int }} minutes ago.
+                  {{ [
+                  'Do not forget to rotate the clothes.', 
+                  'Done with the washing and waiting to start drying.',
+                  'The clothes smell wonderful ... for now.',
+                  'Now all you need to do is take a shower.',
+                  'Someone forgot to move the clothes to the dryer. <break time="2s" /> Can someone please do so ASAP?',
+                  'You might want to move them to the dryer.'
+                  ] | random }}
+                {% endif %}
+              {% endif %}
+            {%- endmacro -%}

@@ -1,0 +1,22 @@
+  {%- macro carwash() -%}
+        <p>
+      {% if is_state('binary_sensor.car_wash', 'on') %}
+        {{ [
+            'Looks like today would be a good day to wash the car.',
+            'By the way, the weather looks good enough to wash the car. ',
+            "If you look outside, it looks like you can wash your car. I am sure Lady G and Bunny would appreciate it. ",
+            'Oh look. Today is a good day to wash your car. ',
+            'Want to know a fact? Today is nice enough to wash your car. ',
+            "Every day can be a holiday. However, today is Why don't you wash your car day."
+        ]|random }}
+        {% else %}
+          {{ [
+            'Looks like today would not be a good day to wash the car. Why would you ruin it?',
+            "Oh look. Today is a good day <pause 1s> ok, it's a bad day to wash your car. ",
+            'Want to know a fact? Today is nice enough to wash your car. ',
+            "Every day can be a holiday. Today is Don't wash your car day. Weather "
+        ]|random }}
+      {% endif %}
+        </p>
+  {%- endmacro -%}
+

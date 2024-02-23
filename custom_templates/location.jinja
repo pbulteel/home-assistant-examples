@@ -1,0 +1,27 @@
+{%- macro location(person) %}
+    {%- if person in ['Sainsburys','Co-op','Tesco Express', 'Tesco Extra'] %}
+        Grocery Store
+    {%- elif person in ['Wilko','HomeBase'] %}
+        Home Improvement Store
+    {%- elif person in ['University'] %}
+        University
+    {%- elif person in ['Oxford Station'] %}
+        Oxford Train Station
+    {%- elif person in ['Bicester North Station', 'Bicester Village Station'] %}
+        Bicester Train Station              
+    {%- elif person in ['Ralph Lauren'] %}
+        Ralph Lauren
+    {%- elif person in ["Lincoln: Friends' House"] %}
+        Lincoln: Christian's Friends' House
+    {%- elif person in ["Reggie and Nick's House"] %}
+        Reggie and Nick's               
+    {%- elif person in ['Marlybone Station'] %}
+        Marlybone Station
+    {%- elif person in ['SocGen Office', 'Virgin Media O2 Office'] %}
+        Office
+    {%- elif person in ['not_home'] %}
+        Lost
+    {%- else %}
+        {{ person }}    
+    {%- endif %}
+{% endmacro -%}

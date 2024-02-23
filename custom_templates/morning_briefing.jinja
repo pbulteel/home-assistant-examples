@@ -1,0 +1,121 @@
+>
+  {# Morning Report #}
+  {%- macro morningbriefing() -%}
+  <speak>
+      {% if now().strftime('%H')|int < 12 and now().strftime('%H')|int > 6 %}
+        Good morning.
+      {% elif now().strftime('%H')|int >= 12 and now().strftime('%H')|int < 17 %}
+        Good afternoon.
+      {% else %}
+        Good evening.
+      {% endif %}
+
+      {% if now().strftime('%H')|int < 12 %}
+        {% if now().strftime('%M')|int == 0 %}
+          It is {{ now().strftime('%H')|int }} o'clock.
+        {% else %}
+          It is {{ now().strftime('%H')|int }} {{ now().strftime('%M')|int }}.
+        {% endif %}
+
+      {% elif now().strftime('%H')|int > 12 %}
+        {% if now().strftime('%M')|int == 0 %}
+          It is {{ now().strftime('%H')|int }} o'clock.
+        {% else %}
+          It is {{ now().strftime('%H')|int }} {{ now().strftime('%M')|int }}.
+        {% endif %}
+      
+      {% else %}
+
+      {% endif %}
+
+      {{ [
+          'Today is ',
+          'If you have not been keeping track today is ',
+          'Do you know what day of the week it is? Today is ',
+          'I do not like to be the bearer of bad news, but today is '
+      ]|random }}
+      {{states.sensor.today_is.state }}.
+
+        It is currently {{states.weather.home.state}} and {{ states.weather.met_office_bicester_3_hourly.attributes.temperature }} degrees in Bicester.
+
+        {{ [
+            'The rest of the day should be, ',
+            'The weather today looks like it will be, ',
+            'Todays forecast should be, '
+        ]|random }}
+          {{ states.weather.met_office_bicester_daily.state }}.
+
+          {% if is_state('sensor.today_is', 'Sunday') %}
+            {% if now().strftime('%H')|int > 17 %}
+            {{ [ 'Do not forget tomorrow is Monday, so the milkman comes around. ',
+              'I advise you move the glass containers outside for the Monday pickup. ',
+              'The milkman will be around tomorrow and the glass containers should go out.'
+            ] | random }}
+            {% endif %}
+          {% elif is_state('sensor.today_is', 'Wednesday') %} 
+            {% if now().strftime('%H')|int > 17 %}
+            {{ [ 'Do not forget tomorrow is Thursday, so the milkman comes around. ',
+              'I advise you move the glass containers outside for the Thursday pickup. ',
+              'The milkman will be around tomorrow and the glass containers should go out.'
+            ] | random }}
+            {% endif %}
+          {% endif %}
+
+          {% if is_state('sensor.today_is', 'Monday') %}
+            {% if now().strftime('%H')|int > 17 %}
+            {{ [ 'Do not forget tomorrow is Trash Day. ',
+              'I advise you move the trash cans to the curb for the weekly pickup. ',
+              ' The trash and recycle should go out.'
+            ] | random }}
+            {% endif %}
+          {% endif %}
+
+          {% if is_state('sensor.today_is', 'Tuesday') %}
+            {% if now().strftime('%H')|int > 17 %}
+              {{ [ 'Do not forget to bring in the trash cans. ',
+              'The trash cans will feel lonely if you leave them out all night. ',
+              'The trash cans cannot come in by themselves. ',
+              'The trash cans are still out on the street. You might not find them when you go dump the trash. ',
+              'The neighbours will get mad if you leave those trash cans out on the street.'
+            ] | random }}
+            {% endif %}
+          {% endif %}
+
+        {% if is_state('sensor.halloween_countdown','0') %}
+          Happy Halloween!
+        {% endif %}
+        {% if is_state('sensor.christmas_countdown','0') %}
+          Merry Christmas Everyone!
+        {% endif %}
+ 
+        {% if is_state('calendar.birthdays', 'on') %}
+          Today is {{ states.calendar.birthdays.attributes.message }}! So Happy Birthday! The confetti cannon is not working otherwise I would shower you in paper garbage that someone else would have to pick up.
+        {% endif %}
+
+        {% if is_state('calendar.holidays_in_united_kingdom', 'on') %}
+          {{ [
+            'And a very special Happy ',
+            'It is also ',
+            'Today is also known as ',
+            'Oh look. Today is ',
+            'Want to know a fact? Today is ',
+            'Everyday can be a holiday. So today is '
+        ]|random }}
+        {{states.calendar.holidays_in_united_kingdom.attributes.message | replace("&"," and ") }}.
+        {%- endif -%}
+
+      {% if is_state('binary_sensor.car_wash', 'on') %}
+        {{ [
+            'Looks like today would be a good day to wash the car.',
+            'By the way, the weather looks good enough to wash the car. ',
+            'If you look outside, it looks like a you can wash your car. I'm sure Lady G and Bunny would appreciate it. ',
+            'Oh look. Today is a good day to wash your car. ',
+            'Want to know a fact? Today is ',
+            'Everyday can be a holiday. So today is '
+        ]|random }}
+      {% endif %}
+
+  </speak>
+  {%- endmacro -%}
+
+

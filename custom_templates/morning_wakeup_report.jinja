@@ -1,0 +1,123 @@
+>
+  {# Morning Wakeup Report #}
+  {%- macro morningwakeup() -%}
+      <speak>
+{% from 'intro.jinja' import greeting %}
+{{ greeting() }}
+
+      <p>
+      It is {{ now().strftime("%I:%M %p") }}.
+      </p>
+      <p>
+      The current weather in Bicester is {{ states.weather.home.attributes.temperature }} degrees 
+      {% if is_state('weather.home', 'rainy') %}
+        {{ [
+        ' with rain.', 
+        ' with showers.'
+        ] | random }}
+      {% elif is_state('weather.home', 'cloudy') %}
+        {{ [
+        ' with clouds.', 
+        ' with cloudy skies.'
+        ] | random }}
+      {% elif is_state('weather.home', 'partlycloudy') %}
+        {{ [
+        ' with some clouds.', 
+        ' with partly cloudy skies.',
+        ' with scatterd clouds'
+        ] | random }}
+      {% elif is_state('weather.home', 'sunny') %}
+        {% if is_state('sun.sun', 'above_horizon') %}
+          {{ [
+          ' and sunny.', 
+          ' with sun.'
+          ] | random }}
+        {% else %}
+          {{ [
+          ' and clear.', 
+          ' with clear skies.'
+          ] | random }}
+        {% endif %}
+      {% else %}
+        and {{ states.weather.home.state }}.
+      {% endif %}
+      </p>
+      <p>
+      Based on the forecasted high temperature of {{states('sensor.bicester_feels_like_temperature_daily')|round}} degrees,  
+        {% if is_state('sensor.clothing_forecast', 'Freezing') %}
+          it is going to be freezing today. 
+          {{ [ ' so I suggest wearing long pants and a heavy coat.',
+               ' so hug someone you love and keep warm.',
+               ' so wear something warm, like multiple layers, a scarf and a hat. Maybe some gloves.',
+               " so you might want to stay inside. I'm warm... ish."
+          ] | random }}
+        {% elif is_state('sensor.clothing_forecast','Cold') %}
+          it is going to be cold today. 
+          {{ [' so I suggest wearing trousers and a light jacket.',
+             ' You are probably going to want to snuggle up.',
+             ' You might want a hot chocolate or beverage.',
+             ' I suggest wearing trousers, maybe even long underwear and a coat.' 
+          ] | random }}
+        {% elif is_state('sensor.clothing_forecast', 'Chilly') %}
+          it is going to be chilly today 
+          {{ [ ' so I suggest wearing trousers. <pause 1s> Maybe carry a sweater or jacket.',
+             ' Make sure you wear something warm.',
+             ' so grab a sweater.',
+             ' and it may be time to get some winter clothes out.'
+          ] | random }}
+        {% elif is_state('sensor.clothing_forecast', 'Nice') %}
+          it is going to be           
+          {{ [ ' nice outside. ',
+            ' pretty nice outside. ',
+            ' a good day to be outside. ',
+            ' rather enjoyable outside. ',
+          ] | random }} 
+
+          {% if is_state('weather.home', 'rainy') or is_state('weather.home', 'cloudy') or is_state('weather.home', 'partlycloudy') %}
+          <pause 1s>
+          {{ [
+            ' Hmmmm, ',
+            ' But ',
+            ' However, '
+          ] | random }}
+            it's rainy or cloudy, so I suggest wearing trousers.
+          {% else %}
+            So I suggest wearing shorts.
+          {% endif %}
+
+        {% elif is_state('sensor.clothing_forecast', 'Toasty') %}
+          it is going to be 
+          {{ [ 'bit warm ',
+            ' rather warm outside ',
+            ' almost too hot outside ',
+            ' a little warm ',
+          ] | random }} 
+          today. So I suggest wearing shorts. 
+        {% elif is_state('sensor.clothing_forecast', 'Hot') %}
+          it is going to be 
+          {{ [ 'hot',
+            ' hotter than the sun ',
+            ' hotter than hot. but in a lot of bad ways ',
+            ' hotter than the sun outside ',
+            ' super hot ',
+            ' hotter than the inside of a volcano '
+          ] | random }} 
+          today. So I suggest wearing shorts.
+        {% else %}
+          it is going to be {{ states.sensor.clothing_forecast.state }} today so I suggest wearing shorts.
+        {% endif %} 
+
+{% from 'solar.jinja' import solarreport %}
+        {{ solarreport() }} 
+{% from 'carwash.jinja' import carwash %}
+	{{ carwash() }}	
+
+{% from 'appliances.jinja' import dryer_needs_emptying %}
+{% from 'appliances.jinja' import washer_needs_emptying %}
+<p>
+{{ washer_needs_emptying() }}
+{{ dryer_needs_emptying() }}
+</p>
+        </speak>
+  {%- endmacro -%}
+

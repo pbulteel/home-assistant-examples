@@ -1,0 +1,16 @@
+{%- macro offline_zigbee_devices %}
+    {% set result=namespace(offline_devices=[]) %} 
+    {% set integrations=['mqtt', 'zwave_js', 'zha'] %}
+    {% for integration in integrations %}
+      {% for device in integration_entities(integration) | map('device_id') | sort | unique | list %}
+        {% for entity in device_entities(device) %}
+          {% if entity.startswith(('switch','sensor','binary_sensor')) and "unavailable" in expand(entity)|string  %}
+            {# add error checking, in case name_by_user==None #}
+            {% set device_name=iif(device_attr(device,"name_by_user"), device_attr(device,"name_by_user"), "ERROR", device_attr(device,"name")) %}
+            {% set result.offline_devices= result.offline_devices + [device_name] %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+    {{"Offline Devices:\n --"}} {{result.offline_devices|sort|unique|join('\n -- ')}}
+{% endmacro %}
