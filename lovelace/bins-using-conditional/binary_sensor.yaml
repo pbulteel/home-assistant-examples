@@ -1,0 +1,7 @@
+{% if states("sensor.green_bin") in ["Today","Tomorrow"] 
+or states("sensor.blue_bin") in ["Today", "Tomorrow"] 
+or states("sensor.brown_bin") in ["Today", "Tomorrow"] %}
+true
+{% else %}
+false
+{% endif %}
