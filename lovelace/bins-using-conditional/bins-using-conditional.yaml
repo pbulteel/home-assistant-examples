@@ -1,0 +1,41 @@
+type: conditional
+conditions:
+  - condition: state
+    entity: binary_sensor.bin_day
+    state: 'on'
+card:
+  type: horizontal-stack
+  cards:
+    - state_image:
+        Today: /local/images/brown_bin.png
+        Tomorrow: /local/images/brown_bin.png
+        unknown: /local/images/brown_bin_off.png
+        unavailable: /local/images/brown_bin_off.png
+      entity: sensor.brown_bin
+      image: /local/images/brown_bin_off.png
+      type: picture-entity
+      show_name: false
+      name: Garden Waste
+    - type: picture-entity
+      entity: sensor.blue_bin
+      name: Recycleable
+      image: /local/images/blue_bin_off.png
+      state_image:
+        Today: /local/images/blue_bin.png
+        Tomorrow: /local/images/blue_bin.png
+        unknown: /local/images/blue_bin_off.png
+        unavailable: /local/images/blue_bin_off.png
+      show_state: true
+      show_name: false
+    - show_state: true
+      show_name: false
+      camera_view: auto
+      type: picture-entity
+      entity: sensor.green_bin
+      image: /local/images/green_bin_off.png
+      name: General Waste
+      state_image:
+        Today: /local/images/green_bin.png
+        Tomorrow: /local/images/green_bin.png
+        unknown: /local/images/green_bin_off.png
+        unavailable: /local/images/green_bin_off.png
