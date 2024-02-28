@@ -1,0 +1,37 @@
+alias: Notify when the door is open on selected day of the week
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - binary_sensor.fridge_door
+    to: "on"
+condition:
+  - condition: or
+    conditions:
+      - condition: and
+        conditions:
+          - condition: time
+            weekday:
+              - mon
+          - condition: state
+            entity_id: input_boolean.monday
+            state: "on"
+        alias: If it's Monday and Monday is on
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.tuesday
+            state: "on"
+          - condition: time
+            weekday:
+              - tue
+        alias: If it's Tuesday and Tuesday is on
+action:
+  - device_id: 6ce1e5bd0b44b11823dbc1953de08409
+    domain: mobile_app
+    type: notify
+    message: Door is open - via notification
+  - service: notify.mobile_app_your_device
+    data:
+      message: Door is open - via service
+mode: single
