@@ -26,6 +26,51 @@ condition:
             weekday:
               - tue
         alias: If it's Tuesday and Tuesday is on
+      - condition: and
+        conditions:
+          - condition: time
+            weekday:
+              - wed
+          - condition: state
+            entity_id: input_boolean.wednesday
+            state: "on"
+        alias: If it's Wednesday and Wednesday is on
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.thursday
+            state: "on"
+          - condition: time
+            weekday:
+              - thu
+        alias: If it's Thursday and Thursday is on
+      - condition: and
+        conditions:
+          - condition: time
+            weekday:
+              - fri
+          - condition: state
+            entity_id: input_boolean.friday
+            state: "on"
+        alias: If it's Friday and Friday is on
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.saturday
+            state: "on"
+          - condition: time
+            weekday:
+              - sat
+        alias: If it's Saturday and Saturday is on
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.sunday
+            state: "on"
+          - condition: time
+            weekday:
+              - sun
+        alias: If it's Sunday and Sunday is on         
 action:
   - device_id: 6ce1e5bd0b44b11823dbc1953de08409
     domain: mobile_app
