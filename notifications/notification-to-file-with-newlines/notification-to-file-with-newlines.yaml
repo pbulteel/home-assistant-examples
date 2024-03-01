@@ -1,0 +1,26 @@
+notify: 
+  - name: save_to_file
+    platform: file
+    filename: /config/my_data_with_newlines.txt
+    timestamp: false
+automation:
+
+alias: save data to file
+description: ""
+trigger:
+  - platform: time
+    at: "12:05"
+condition: []
+action:
+  - service: notify.save_to_file
+    data:
+      message: >
+        {% set output = states('sensor.date_time') + "\n" +
+        states('sensor.office_temperature') | round (2) | string() + "\n" +
+        states('sensor.attic_temperature') | string () + "\n" %}
+        {{ output }}
+mode: single
+initial_state: "on"
+
+
+
