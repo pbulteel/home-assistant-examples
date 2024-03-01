@@ -1,0 +1,435 @@
+type: custom:stack-in-card
+mode: horizontal
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-title-card
+        title: Waste Recycling
+        subtitle: null
+        title_tap_action:
+          action: navigate
+          navigation_path: /calendar
+        subtitle_tap_action:
+          action: none
+      - type: custom:stack-in-card
+        mode: horizontal
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: '{{ state_attr(entity,''friendly_name'')[12:]}}'
+                secondary: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                    Due Today
+                  {%elif t1==1 %}
+                    Move Bins
+                   {%elif t1>1 and t1<8 %}
+                    {{as_datetime(state_attr(entity,'Food Recycling')).strftime('%A')}}
+                   {%elif t1>7 and t1<15 %}
+                    ....
+                   {%else %}
+                    Unknown
+                   {%endif %}
+                multiline_secondary: true
+                icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<8 %}
+                   {{state_attr(entity,'icon') }}
+                  {%elif t1>7 and t1<15 %}
+                   {{state_attr(entity,'icon') }}
+                  {%else %}
+                   mdi:alert
+                  {%endif %}
+                entity: sensor.recycling_food
+                icon_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {% if t1==0%}
+                   red
+                  {%elif t1==1 %}
+                   orange
+                  {%elif t1>1 and t1<8 %}
+                   green
+                  {%elif t1>7 and t1<15 %}
+                   grey
+                  {%else %}
+                   blue
+                  {%endif %}
+                badge_icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                   mdi:calendar-alert
+                  {%elif t1<7 %}
+                   mdi:calendar-blank
+                  {%else%}
+                  {%endif %}
+                badge_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<2 %}
+                   red
+                  {%elif t1>1 and t1<15 %}
+                   green
+                  {%else %}
+                   blue
+                  {%endif %}
+                fill_container: true
+                tap_action:
+                  action: navigate
+                  navigation_path: /calendar
+                layout: vertical
+              - type: custom:mushroom-template-card
+                primary: '{{state_attr(entity,''friendly_name'')[12:]}}'
+                secondary: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                    Due Today
+                  {%elif t1==1 %}
+                    Move Bins
+                   {%elif t1>1 and t1<8 %}
+                    {{as_datetime(state_attr(entity,'Garden Recycling')).strftime('%A')}}
+                   {%elif t1>7 and t1<15 %}
+                    ....
+                   {%else %}
+                    Unknown
+                   {%endif %}
+                multiline_secondary: true
+                icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<8 %}
+                   {{state_attr(entity,'icon') }}
+                  {%elif t1>7 and t1<15 %}
+                   {{state_attr(entity,'icon') }}
+                  {%else %}
+                   mdi:alert
+                  {%endif %}
+                entity: sensor.recycling_garden
+                icon_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {% if t1==0%}
+                   red
+                  {%elif t1==1 %}
+                   orange
+                  {%elif t1>1 and t1<8 %}
+                   green
+                  {%elif t1>7 and t1<15 %}
+                   grey
+                  {%else %}
+                   blue
+                  {%endif %}
+                badge_icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                   mdi:calendar-alert
+                  {%elif t1<7 %}
+                   mdi:calendar-blank
+                  {%else%}
+                  {%endif %}
+                badge_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<2 %}
+                   red
+                  {%elif t1>1 and t1<15 %}
+                   green
+                  {%else %}
+                   blue
+                  {%endif %}
+                fill_container: true
+                tap_action:
+                  action: navigate
+                  navigation_path: /calendar
+                layout: vertical
+              - type: custom:mushroom-template-card
+                primary: '{{state_attr(entity,''friendly_name'')[12:]}}'
+                secondary: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                    Due Today
+                  {%elif t1==1 %}
+                    Move Bins
+                   {%elif t1>1 and t1<8 %}
+                    {{as_datetime(state_attr(entity,'General Recycling')).strftime('%A')}}
+                   {%elif t1>7 and t1<15 %}
+                    ....
+                   {%else %}
+                    Unknown
+                   {%endif %}
+                multiline_secondary: true
+                icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<8 %}
+                   {{state_attr(entity,'icon') }}
+                  {%elif t1>7 and t1<15 %}
+                   {{state_attr(entity,'icon') }}
+                  {%else %}
+                   mdi:alert
+                  {%endif %}
+                entity: sensor.recycling_general
+                icon_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {% if t1==0%}
+                   red
+                  {%elif t1==1 %}
+                   orange
+                  {%elif t1>1 and t1<8 %}
+                   green
+                  {%elif t1>7 and t1<15 %}
+                   grey
+                  {%else %}
+                   blue
+                  {%endif %}
+                badge_icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                   mdi:calendar-alert
+                  {%elif t1<7 %}
+                   mdi:calendar-blank
+                  {%else%}
+                  {%endif %}
+                badge_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<2 %}
+                   red
+                  {%elif t1>1 and t1<15 %}
+                   green
+                  {%else %}
+                   blue
+                  {%endif %}
+                fill_container: true
+                tap_action:
+                  action: navigate
+                  navigation_path: /calendar
+                layout: vertical
+              - type: custom:mushroom-template-card
+                primary: '{{state_attr(entity,''friendly_name'')[12:]}}'
+                secondary: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                    Due Today
+                  {%elif t1==1 %}
+                    Move Bins
+                   {%elif t1>1 and t1<7 %}
+                    {{as_datetime(state_attr(entity,'Glass Recycling')).strftime('%A')}}
+                   {%elif t1>6 and t1<15 %}
+                    ....
+                   {%else %}
+                    Unknown
+                   {%endif %}
+                multiline_secondary: true
+                icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<8 %}
+                   {{state_attr(entity,'icon') }}
+                  {%elif t1>7 and t1<15 %}
+                   {{state_attr(entity,'icon') }}
+                  {%else %}
+                   mdi:alert
+                  {%endif %}
+                entity: sensor.recycling_glass
+                icon_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {% if t1==0%}
+                   red
+                  {%elif t1==1 %}
+                   orange
+                  {%elif t1>1 and t1<8 %}
+                   green
+                  {%elif t1>7 and t1<15 %}
+                   grey
+                  {%else %}
+                   blue
+                  {%endif %}
+                badge_icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                   mdi:calendar-alert
+                  {%elif t1<7 %}
+                   mdi:calendar-blank
+                  {%else%}
+                  {%endif %}
+                badge_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<2 %}
+                   red
+                  {%elif t1>1 and t1<15 %}
+                   green
+                  {%else %}
+                   blue
+                  {%endif %}
+                fill_container: true
+                tap_action:
+                  action: navigate
+                  navigation_path: /calendar
+                layout: vertical
+              - type: custom:mushroom-template-card
+                primary: '{{state_attr(entity,''friendly_name'')[12:]}}'
+                secondary: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                    Due Today
+                  {%elif t1==1 %}
+                    Move Bins
+                   {%elif t1>1 and t1<8 %}
+                    {{as_datetime(state_attr(entity,'Paper Recycling')).strftime('%A')}}
+                   {%elif t1>7 and t1<15 %}
+                    ....
+                   {%else %}
+                    Unknown
+                   {%endif %}
+                multiline_secondary: true
+                icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<8 %}
+                   {{state_attr(entity,'icon') }}
+                  {%elif t1>7 and t1<15 %}
+                   {{state_attr(entity,'icon') }}
+                  {%else %}
+                   mdi:alert
+                  {%endif %}
+                entity: sensor.recycling_paper
+                icon_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {% if t1==0%}
+                   red
+                  {%elif t1==1 %}
+                   orange
+                  {%elif t1>1 and t1<8 %}
+                   green
+                  {%elif t1>7 and t1<15 %}
+                   grey
+                  {%else %}
+                   blue
+                  {%endif %}
+                badge_icon: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1==0 %}
+                   mdi:calendar-alert
+                  {%elif t1<7 %}
+                   mdi:calendar-blank
+                  {%else%}
+                  {%endif %}
+                badge_color: |-
+                  {%set t1=state_attr(entity,'daysTo')|int(0)%}
+                  {%if t1<2 %}
+                   red
+                  {%elif t1>1 and t1<15 %}
+                   green
+                  {%else %}
+                   blue
+                  {%endif %}
+                fill_container: true
+                tap_action:
+                  action: navigate
+                  navigation_path: /calendar
+                layout: vertical
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-template-card
+            primary: null
+            secondary: |-
+              {%set t1=state_attr(entity,'daysTo')|int(0)%}
+              {%if t1==0 %}
+               Collection
+              {%elif t1==1 %}
+               Put out bins
+              {%elif t1>0 and t1<7 %}
+               {{t1}} days time
+              {%elif t1>6 and t1<15 %}
+               Next week
+              {%else %}
+               Unknown
+              {%endif %}
+            multiline_secondary: true
+            entity: sensor.recycling_food
+            fill_container: true
+            tap_action:
+              action: navigate
+              navigation_path: /calendar
+            layout: vertical
+          - type: custom:mushroom-template-card
+            primary: null
+            secondary: |-
+              {%set t1=state_attr(entity,'daysTo')|int(0)%}
+              {%if t1==0 %}
+               Collection
+              {%elif t1==1 %}
+               Put out bins
+              {%elif t1>0 and t1<7 %}
+               {{t1}} days time
+              {%elif t1>6 and t1<15 %}
+               Next week
+              {%else %}
+               Unknown
+              {%endif %}
+            multiline_secondary: true
+            entity: sensor.recycling_garden
+            fill_container: true
+            tap_action:
+              action: navigate
+              navigation_path: /calendar
+            layout: vertical
+          - type: custom:mushroom-template-card
+            primary: null
+            secondary: |-
+              {%set t1=state_attr(entity,'daysTo')|int(0)%}
+              {%if t1==0 %}
+               Collection
+              {%elif t1==1 %}
+               Put out bins
+              {%elif t1>0 and t1<7 %}
+               {{t1}} days time
+              {%elif t1>6 and t1<15 %}
+               Next week
+              {%else %}
+               Unknown
+              {%endif %}
+            multiline_secondary: true
+            entity: sensor.recycling_general
+            fill_container: true
+            tap_action:
+              action: navigate
+              navigation_path: /calendar
+            layout: vertical
+          - type: custom:mushroom-template-card
+            primary: null
+            secondary: |-
+              {%set t1=state_attr(entity,'daysTo')|int(0)%}
+              {%if t1==0 %}
+               Collection
+              {%elif t1==1 %}
+               Put out bins
+              {%elif t1>0 and t1<7 %}
+               {{t1}} days time
+              {%elif t1>6 and t1<15 %}
+               Next week
+              {%else %}
+               Unknown
+              {%endif %}
+            multiline_secondary: true
+            entity: sensor.recycling_glass
+            fill_container: true
+            tap_action:
+              action: navigate
+              navigation_path: /calendar
+            layout: vertical
+          - type: custom:mushroom-template-card
+            primary: null
+            secondary: |-
+              {%set t1=state_attr(entity,'daysTo')|int(0)%}
+              {%if t1==0 %}
+               Collection
+              {%elif t1==1 %}
+               Put out bins
+              {%elif t1>0 and t1<7 %}
+               {{t1}} days time
+              {%elif t1>6 and t1<15 %}
+               Next week
+              {%else %}
+               Unknown
+              {%endif %}
+            multiline_secondary: true
+            entity: sensor.recycling_paper
+            fill_container: true
+            tap_action:
+              action: navigate
+              navigation_path: /calendar
+            layout: vertical
