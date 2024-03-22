@@ -1,0 +1,18 @@
+alias: Notify when Work calendar event happens
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - calendar.work
+    to: "on"
+    from: "off"
+condition: []
+action:
+  - alias: Speak on mobile what event is happening
+    service: notify.mobile_app_android_device
+    data:
+      message: TTS
+      data:
+        media_stream: alarm_stream
+        tts_text: "{{ state_attr('calendar.work', 'message') }} is starting."
+mode: single
