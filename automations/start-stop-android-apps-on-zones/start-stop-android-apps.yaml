@@ -170,15 +170,17 @@ action:
             alias: Go to Shopping List URL
           - choose:
               - conditions:
-                  - condition: zone
-                    entity_id: person.this_is_you
-                    zone: zone.tesco_express
-                  - condition: zone
-                    entity_id: person.this_is_you
-                    zone: zone.tesco_express_2
-                  - condition: zone
-                    entity_id: person.this_is_you
-                    zone: zone.tesco_extra
+                  - condition: or
+                    conditions:              
+                    - condition: zone
+                      entity_id: person.this_is_you
+                      zone: zone.tesco_express
+                    - condition: zone
+                      entity_id: person.this_is_you
+                      zone: zone.tesco_express_2
+                    - condition: zone
+                      entity_id: person.this_is_you
+                      zone: zone.tesco_extra
                 sequence:
                   - alias: Open Tesco app
                     service: notify.mobile_app_s23_your_phone
@@ -187,12 +189,14 @@ action:
                       data:
                         package_name: com.tesco.grocery.view
               - conditions:
-                  - condition: zone
-                    entity_id: person.this_is_you
-                    zone: zone.co_op
-                  - condition: zone
-                    entity_id: person.this_is_you
-                    zone: zone.coop_kingsmere
+                  - condition: or                        
+                  - conditions:
+                      - condition: zone
+                        entity_id: person.this_is_you
+                        zone: zone.co_op
+                      - condition: zone
+                        entity_id: person.this_is_you
+                        zone: zone.coop_kingsmere
                 sequence:
                   - alias: Open Co-op app
                     service: notify.mobile_app_s23_your_phone
